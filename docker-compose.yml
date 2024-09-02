@@ -17,6 +17,8 @@ services:
     depends_on:
       ckan:
         condition: service_healthy
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1
     ports:
       - "0.0.0.0:${NGINX_SSLPORT_HOST}:${NGINX_SSLPORT}"
     
@@ -33,6 +35,8 @@ services:
       - redisnet
     env_file:
       - .env
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1
     depends_on:
       db:
         condition: service_healthy
@@ -53,6 +57,8 @@ services:
       - ckannet
       - dbnet
     image: ckan/ckan-base-datapusher:${DATAPUSHER_VERSION}
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:8800"]
